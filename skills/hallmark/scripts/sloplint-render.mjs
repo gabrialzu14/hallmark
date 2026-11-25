@@ -132,7 +132,7 @@ export async function renderCheck(htmlFiles, metaIn) {
     return none;
   }
   const findings = [];
-  const browser = await puppeteer.launch({ executablePath: chrome, headless: true });
+  const browser = await puppeteer.launch({ executablePath: chrome, headless: true, args: process.getuid?.() === 0 ? ['--no-sandbox'] : [] });
   try {
     for (const file of htmlFiles) {
       const page = await browser.newPage();

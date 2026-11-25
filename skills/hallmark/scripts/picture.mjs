@@ -32,7 +32,7 @@ const CHROMES = [process.env.CHROME_PATH, '/Applications/Google Chrome.app/Conte
 const findChrome = () => { const c = CHROMES.find((x) => x && existsSync(x)); if (c) return c; try { const b = typeof puppeteer.executablePath === 'function' ? puppeteer.executablePath() : null; if (typeof b === 'string' && existsSync(b)) return b; } catch {} return null; };
 const chrome = findChrome();
 if (!chrome) { console.error('no Chrome or Chromium found; set CHROME_PATH to its executable'); process.exit(1); }
-const browser = await puppeteer.launch({ executablePath: chrome, headless: true });
+const browser = await puppeteer.launch({ executablePath: chrome, headless: true, args: process.getuid?.() === 0 ? ['--no-sandbox'] : [] });
 const p = await browser.newPage();
 await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
 await p.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });

@@ -85,7 +85,7 @@ const urlFor = (route) => {
   return r.origin === u.origin ? r.href : null;
 };
 mkdirSync(out, { recursive: true });
-const browser = await puppeteer.launch({ executablePath: chrome, headless: true });
+const browser = await puppeteer.launch({ executablePath: chrome, headless: true, args: process.getuid?.() === 0 ? ['--no-sandbox'] : [] });
 const made = [];
 try {
   for (const route of isUrl ? routes : ['/']) {
